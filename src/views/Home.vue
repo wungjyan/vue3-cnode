@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <van-button>测试</van-button>
   </div>
 </template>
 
@@ -8,8 +8,13 @@
 import { defineComponent } from "vue";
 import { AxiosResponse, AxiosError } from "axios";
 import { getTopics } from "@/api/topics";
+import { Button } from "vant";
+
 export default defineComponent({
   name: "Home",
+  components: {
+    [Button.name]: Button,
+  },
   setup() {
     const obj = { page: 1, tab: "ask", limit: 10 };
     getTopics(obj)
