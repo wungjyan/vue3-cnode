@@ -1,14 +1,14 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
 
-interface getTopicsArgs {
+export interface getTopicsArgsInterface {
   page: number;
   tab: string;
   limit: number;
   mdrender?: string;
 }
 // 获取主题列表
-export const getTopics = (params: getTopicsArgs): AxiosPromise => {
+export const getTopics = (params: getTopicsArgsInterface): AxiosPromise => {
   return request({
     url: "/topics",
     method: "get",
@@ -16,13 +16,15 @@ export const getTopics = (params: getTopicsArgs): AxiosPromise => {
   });
 };
 
-interface getTopicContentArgs {
+interface getTopicContentArgsInterface {
   id: number | string;
   mdrender?: string;
   accesstoken?: string;
 }
 // 获取主题详情
-export const getTopicContent = (params: getTopicContentArgs): AxiosPromise => {
+export const getTopicContent = (
+  params: getTopicContentArgsInterface
+): AxiosPromise => {
   return request({
     url: "/topic/" + params.id,
     method: "get",
@@ -30,14 +32,16 @@ export const getTopicContent = (params: getTopicContentArgs): AxiosPromise => {
   });
 };
 
-interface createTopicsArgs {
+interface createTopicsArgsInterface {
   accesstoken: string;
   title: string;
   tab: string;
   content: string;
 }
 // 新建主题
-export const createTopics = (params: createTopicsArgs): AxiosPromise => {
+export const createTopics = (
+  params: createTopicsArgsInterface
+): AxiosPromise => {
   return request({
     url: "/topics",
     method: "get",
