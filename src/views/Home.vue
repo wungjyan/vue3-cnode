@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home-page">
     <div class="header">头部</div>
     <van-tabs v-model:active="active" @change="onSwitchTab" sticky>
       <van-tab v-for="tab in tabTypes" :key="tab.val" :title="tab.name">
@@ -16,7 +16,12 @@
           @load="onLoad"
           finished-text="没有更多了"
         >
-          <div class="topic-cell" v-for="item in list" :key="item.id">
+          <div
+            class="topic-cell"
+            v-for="item in list"
+            :key="item.id"
+            @click="onClickTopic(item.id)"
+          >
             <div class="avatar">
               <img :src="item.author.avatar_url" alt="avatar" />
             </div>
@@ -46,15 +51,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, createApp } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  toRefs,
+  getCurrentInstance,
+} from "vue";
+import { useRouter } from "vue-router";
 import { AxiosResponse, AxiosError } from "axios";
 import { getTopics, getTopicsArgsInterface } from "@/api/topics";
 import { Tab, Tabs, List, Loading } from "vant";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/zh-cn";
-dayjs.locale("zh-cn");
-dayjs.extend(relativeTime);
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -71,6 +79,8 @@ export default defineComponent({
       { name: "问答", val: "ask" },
       { name: "招聘", val: "job" },
     ];
+
+    // init state
     const state = reactive({
       active: 0,
       list: [],
@@ -80,9 +90,11 @@ export default defineComponent({
       showLoading: false,
     });
 
+    // 挂载
     onMounted(() => {
       getAjaxData();
     });
+
     // 切换 tab
     const onSwitchTab = (index: number) => {
       state.list = [];
@@ -120,7 +132,7 @@ export default defineComponent({
         });
     };
 
-    // load
+    // 上拉加载
     const onLoad = () => {
       console.log("load");
       if (!state.finished) {
@@ -129,7 +141,18 @@ export default defineComponent({
       }
     };
 
-    // tag map
+    // 点击 -> 路由跳转
+    const router = useRouter();
+    const onClickTopic = (id: string) => {
+      router.push({
+        name: "Topic",
+        params: {
+          id: id,
+        },
+      });
+    };
+
+    // 映射 tag 内容
     const getCurTabTag = (item: any): string => {
       enum TabTag {
         all = "综合",
@@ -146,15 +169,17 @@ export default defineComponent({
       }
     };
 
-    // time format
+    const { ctx } = getCurrentInstance() as any;
+    // 时间格式化
     const getFormatTime = (timeStr: string) => {
-      return dayjs(timeStr).fromNow();
+      return ctx.$dayjs(timeStr).fromNow();
     };
 
     return {
       tabTypes,
       onSwitchTab,
       onLoad,
+      onClickTopic,
       getCurTabTag,
       getFormatTime,
       ...toRefs(state),
@@ -164,11 +189,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-* {
-  padding: 0;
-  margin: 0;
-}
-.home {
+.home-page {
   height: 100%;
 }
 .header {
@@ -178,6 +199,7 @@ export default defineComponent({
   text-align: center;
   padding-top: 20px;
   color: #fff;
+  font-size: 20px;
   font-weight: bold;
   background: #ee0a24;
 }

@@ -16,7 +16,7 @@ export const getTopics = (params: getTopicsArgsInterface): AxiosPromise => {
   });
 };
 
-interface getTopicContentArgsInterface {
+export interface getTopicContentArgsInterface {
   id: number | string;
   mdrender?: string;
   accesstoken?: string;
