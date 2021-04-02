@@ -13,6 +13,15 @@
       </div>
     </header>
     <main class="main-content" v-html="topic.content"></main>
+    <div class="reply-box">
+      <div class="header">
+        <span>{{ topic.reply_count }}回复</span>
+        <span @click="addReply">添加评论</span>
+      </div>
+      <replies-list :list="topic.replies"></replies-list>
+    </div>
+
+    <div class="goback" @click="goBack">返回</div>
   </div>
 </template>
 
@@ -24,11 +33,13 @@ import {
   toRefs,
   getCurrentInstance,
 } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { getTopicContent } from "@/api/topics";
+import RepliesList from "./components/RepliesList.vue";
 
 export default defineComponent({
   name: "Topic",
+  components: { RepliesList },
   setup() {
     const state = reactive({
       topic: null,
@@ -54,8 +65,20 @@ export default defineComponent({
       return ctx.$dayjs(timeStr).fromNow();
     };
 
+    // 添加评论
+    const addReply = () => {
+      console.log(11);
+    };
+
+    // 返回
+    const router = useRouter();
+    const goBack = () => {
+      router.go(-1);
+    };
     return {
       getFormatTime,
+      addReply,
+      goBack,
       ...toRefs(state),
     };
   },
@@ -93,8 +116,31 @@ export default defineComponent({
     color: #333;
     padding: 10px;
   }
-}
-.markdown-text img {
-  width: 95%;
+  .reply-box {
+    margin-top: 10px;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      background-color: #f6f6f6;
+      padding: 5px 10px;
+    }
+  }
+  .goback {
+    position: fixed;
+    left: 0;
+    top: 200px;
+    width: 45px;
+    height: 30px;
+    padding-left: 5px;
+    line-height: 30px;
+    font-size: 16px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
 </style>
