@@ -1,24 +1,7 @@
 # vue3-cnode
 
-## Project setup
-```
-npm install
-```
+之前用vue2实现过，在这里 [vue2-cnode](https://github.com/wungjyan/vue-CNode)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+准备用 vue3 再重构一遍，目前只重构了一部分就没再继续了，主要是为了试用下 vue3 + ts，再多写点也差不多。
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+vue3 上手很丝滑，就是 ts 还是有点不熟悉。
